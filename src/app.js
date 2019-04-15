@@ -1,20 +1,16 @@
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
+const product = require('./routes/product');
+const bodyParser = require('body-parser');
 
-app.get('/', async (req, res) => {
-    res.send('read');
-});
+mongoose.connect('mongodb://localhost/crud', { useNewUrlParser: true })
+    .then(() => console.log('Connected to MongoDB...'))
+    .catch(err => console.error('Could not connect to MongoDB...', err))
 
-app.post('/', async (req, res) => {
-    res.send('create');
-});
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-app.delete('/', async (req, res) => {
-    res.send('delete');
-});
-
-app.put('/', async (req, res) => {
-    res.send('update');
-});
+app.use('/product', product);
 
 app.listen(3000);
